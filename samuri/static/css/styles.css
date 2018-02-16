@@ -1,0 +1,86 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+nav {
+    padding-left: 5px;
+}
+nav li:hover, nav li:active, nav .active-state {
+    background-color: whitesmoke;
+}
+nav li a:hover, nav li a:active, nav .active-state a {
+    color: black !important;
+}
+section {
+    overflow: auto;
+    padding-bottom: 100px;
+}
+footer {
+    width: 100%;
+    position: fixed;
+    bottom: -10px;
+    z-index: 10;
+}
+.message-container {
+    background-color: #f44336;
+    padding: 1px;
+    margin: 2px;
+    border-radius: 2px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    font-size: 1.2em;
+}
+
+.card-panel {
+    border-top: 4px solid #43a047;
+    border-bottom: 4px solid #43a047;
+}
+.text-increase {
+    font-size: 1.3em;
+    font-family: 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
+}
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    z-index: 999999;
+}
+
+.progress {
+    width: 40%;
+    top: 48%;
+    margin: 0 auto;
+}
+
+.material-icons {
+    vertical-align: middle;
+}
+
+.django-latexify {
+    font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif !important;
+}
+
+#time-remaining {
+    color: #ff3333;
+    font-weight: bolder;
+    font-size: 1.2em;
+}
+#test-duration {
+    color: #47d147;
+    font-weight: bolder;
+    font-size: 1.2em;
+}
+.test-timings {
+    font-weight: bold;
+    font-size: 1.1em;
+    font-family: Roboto, sans-serif !important;
+    background: white;
+    color: #2196F3;
+    text-align: center;
+    box-shadow: 1px 1px 5px #aaaaaa;
+}

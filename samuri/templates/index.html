@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>MS Hackathon</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/materialize.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+</head>
+<body class="grey lighten-4">
+<section class="container">
+    <h4 class="center red-text text-accent-4">WELCOME TO SAMURIZER</h4>
+    {% for article in all_articles %}
+        <div class="row">
+            <div class="col l12 m12 s12">
+                <div class="card-panel white">
+                    <div class="card-content black-text">
+                        <h5 class="card-title center">{{ article.headline }}</h5>
+                        <p><b>PUBLISHED DATE:</b>&nbsp;{{ article.post_date }}</p>
+                        <p class="head-summary center text-increase">SUMMARY</p>
+                        <p class="summary">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
+                            unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                        <div class="full-content" style="display: none;">
+                            <p class="text-increase head-details center">DETAILS</p>
+                            <p>{{ article.content }}</p>
+                            <img src="{{ article.image_link }}" class="responsive-img">
+                        </div>
+                    </div>
+                    <div class="card-action center">
+                        <a href="#" class="btn green darken-1 toggle-full-content">VIEW FULL ARTICLE</a>
+                        <a href="{{ article.source_link }}" class="btn green darken-1" target="_blank">Source Link</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</section>
+
+<footer class="page-footer green darken-1" id="footer">
+    <div class="footer-copyright">
+        <div class="container">
+            © 2017 All Rights Reserved
+            <a class="white-text right" href="https://github.com/codlocker" target="_blank"><i
+                    class="material-icons left">build</i> by codlocker</a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
