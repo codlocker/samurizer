@@ -18,4 +18,6 @@ are Hindi, Tamil and Urdu.
 
 ##### SCREENSHOTS TO THE CURRENT STATUS
 
-- Word Cloud ![Image](samuri/static/images/172.png)
+- Word Cloud 
+
+![Image](samuri/static/images/172.png)
