@@ -13,12 +13,35 @@ $(document).ready(function () {
         }
     });
 });
-
 function get_selected_lan(res) {
     let qid = $(res).attr("id").split("_")[1];
     let index = res.selectedIndex;
     console.log(qid);
-    console.log(index);
+    let csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    let lang_dict = $(res).find("option").eq(index).text();
+    let formData = [];
+    formData.push({"name": "csrfmiddlewaretoken", "value": csrf_token});
+    formData.push({"name": "question_id", "value": qid});
+    formData.push({"name": "language", "value" : lang_dict});
+    $.ajax({
+        'url': "/parse_lang/",
+        'type': "POST",
+        'dataType': "json",
+        'data': formData,
+        beforeSend: function () {
+            M.toast({html: "Parsing Data..."});
+        }, success: function (response) {
+            if(response.id === 200) {
+                let className1 = ".content-details-" + qid;
+                let className2 = ".summary-" + qid;
+                $(className1).html(response.content);
+                $(className2).html(response.summary);
+            }
+        }, error: function (xhr, textStatus, errorThrown) {
+            console.log("Please report this error: " + errorThrown + " " + xhr.status);
+            res = false;
+        } 
+    });
 }
 
 function add_data(image, score) {

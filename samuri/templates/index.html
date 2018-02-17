@@ -13,6 +13,7 @@
 </head>
 <body class="grey lighten-4">
 <section class="container">
+    {% csrf_token %}
     <h4 class="center red-text text-accent-4">WELCOME TO SAMURIZER</h4>
     {% if all_articles|length  == 0%}
         <div class="card-panel">
@@ -42,6 +43,7 @@
                             <div class="col l3 m3 s3">
                                 <select id="language_{{ article.id }}" onchange="return get_selected_lan(this);">
                                     <option value="en" selected>ENGLISH</option>
+                                    <option value="bn">BENGALI</option>
                                     <option value="ta">TAMIL</option>
                                     <option value="hi">HINDI</option>
                                     <option value="ur">URDU</option>
@@ -49,9 +51,7 @@
                             </div>
                         </div>
                         <p class="head-summary center text-increase">SUMMARY</p>
-                        <p class="summary">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                            unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                        <p class="summary-{{ article.id }}">{{ article.summarized_data }}</p>
                         {% if article.sentiment_score == 0.5 %}
                             <p class="teal-text text-darken-1 center">This article is not opinion based and is a factual news material</p>
                         {% else %}
@@ -61,9 +61,9 @@
                                 <p class="indigo-text text-darken-3 center">This article is opinion based more as a positive emotion</p>
                             {% endif %}
                         {% endif %}
-                        <div class="full-content" style="display: none;">
-                            <p class="text-increase head-details center">DETAILS</p>
-                            <p>{{ article.content }}</p>
+                        <div class="full-content center" style="display: none;">
+                            <p class="text-increase head-details">DETAILS</p>
+                            <p class="content-details-{{ article.id }}">{{ article.content }}</p>
                             {% if article.image_link != '/images/no-image.png' %}
                                 <img src="{{ article.image_link }}" class="responsive-img">
                             {% endif %}

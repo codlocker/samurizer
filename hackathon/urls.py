@@ -18,5 +18,6 @@ from django.urls import path
 import samuri.views as web_views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', web_views.index)
+    path('', web_views.index),
+    path('parse_lang/', web_views.parse)
 ]

@@ -1,4 +1,5 @@
 from newspaper import Article
+from samuri.translate import Translator
 from datetime import date, timedelta
 from django.utils import timezone
 from samuri.models import *
@@ -13,6 +14,7 @@ class NewsFeed:
         self.API_KEY = "8526eb5151d1442cb4115f8e78cc1cb0"
         self.url = "https://newsapi.org/v2/"
         self.response = None
+        self.translate = Translator()
 
     def get_news_feed(self, country, from_date, content_type="everything"):
         if from_date is None:
@@ -33,12 +35,16 @@ class NewsFeed:
                     article_name.download()
                     article_name.parse()
                     response_data["articles"][itr]["description"] = article_name.text
-                    response_data["articles"][itr]["score"] = text_analytics.perform_sentimental_analysis(response_data["articles"][itr]["description"])
+                    response_data["articles"][itr]["score"] = text_analytics.perform_sentimental_analysis(
+                        response_data["articles"][itr]["description"])
                     keywords = text_analytics.get_keywords(response_data["articles"][itr]["description"], "en")
                     response_data["articles"][itr]["keywords"] = ''
                     for key in keywords:
                         response_data["articles"][itr]["keywords"] += (key + ",")
+                    response_data["articles"][itr]["summary"] = self.translate.generate_summary(response_data["articles"][itr]["description"],
+                                                        response_data["articles"][itr]["keywords"])
                 except Exception as ex:
+                    print(str(ex))
                     response_data["articles"][itr] = None
             return response_data["articles"]
         else:
@@ -56,14 +62,16 @@ class NewsFeed:
                 if not check_exists:
                     if news["urlToImage"]:
                         add_news = NewsContent(headline=news["title"], content=news["description"],
-                                               source_link=news["url"],
+                                               source_link=news["url"], summarized_data=news["summary"],
                                                language='EN', date_added=timezone.now(), post_date=news["publishedAt"],
-                                               image_link=news["urlToImage"], sentiment_score=news["score"], keywords=news["keywords"])
+                                               image_link=news["urlToImage"], sentiment_score=news["score"],
+                                               keywords=news["keywords"])
                         add_news.save()
                     else:
-                        add_news = NewsContent(headline=news["title"], content=news["description"],
+                        add_news = NewsContent(headline=news["title"], content=news["description"], summarized_data=news["summary"],
                                                source_link=news["url"], language='EN', date_added=timezone.now(),
-                                               post_date=news["publishedAt"], sentiment_score=news["score"], keywords=news["keywords"])
+                                               post_date=news["publishedAt"], sentiment_score=news["score"],
+                                               keywords=news["keywords"])
                         add_news.save()
                     count += 1
             except DatabaseError as de:
@@ -74,11 +82,28 @@ class NewsFeed:
 class DatabaseManager:
 
     def __init__(self):
-        pass
+        self.translate = Translator()
 
     def get_news_content(self):
         all_data = NewsContent.objects.all()
         return all_data
+
+    def get_translated_news(self, qid, lang):
+        data_exists = NewsContent.objects.filter(id=qid).exists()
+        response = {}
+        if data_exists:
+            data = NewsContent.objects.get(id=qid)
+            text = data.content
+            summary = data.summarized_data
+            cnt = self.translate.get_translated_text(text, lang)
+            # print(cnt)
+            smy = self.translate.get_translated_text(summary, lang)
+            # print(smy)
+            response["summary"] = [smy if len(smy) > 0 else None][0]
+            response["content"] = [cnt if len(cnt) > 0 else None][0]
+            return response
+        else:
+            return None
 
 
 class TextAnalytics:
