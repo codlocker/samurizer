@@ -14,21 +14,59 @@
 <body class="grey lighten-4">
 <section class="container">
     <h4 class="center red-text text-accent-4">WELCOME TO SAMURIZER</h4>
+    {% if all_articles|length  == 0%}
+        <div class="card-panel">
+            <h5 class="center">Sorry!! We don't have any news content yet</h5>
+        </div>
+    {% endif %}
     {% for article in all_articles %}
         <div class="row">
             <div class="col l12 m12 s12">
                 <div class="card-panel white">
                     <div class="card-content black-text">
-                        <h5 class="card-title center">{{ article.headline }}</h5>
-                        <p><b>PUBLISHED DATE:</b>&nbsp;{{ article.post_date }}</p>
+                        <div class="row">
+                            <div class="col m9 s9 l9 center">
+                                <h5 class="card-title center">{{ article.headline }}</h5>
+                            </div>
+                            <div class="col m3 s3 l3">
+                                <a class="btn-floating btn-large waves-effect waves-light red right" href="#chart"
+                                   onclick="return add_data('{{ article.id }}', {{ article.sentiment_score }})"><i
+                                        class="material-icons">insert_chart</i></a>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col l9 m9 s9">
+                                <p><b>PUBLISHED DATE:</b>&nbsp;{{ article.post_date }}</p>
+                            </div>
+                            <div class="col l3 m3 s3">
+                                <select id="language_{{ article.id }}" onchange="return get_selected_lan(this);">
+                                    <option value="en" selected>ENGLISH</option>
+                                    <option value="ta">TAMIL</option>
+                                    <option value="hi">HINDI</option>
+                                    <option value="ur">URDU</option>
+                                </select>
+                            </div>
+                        </div>
                         <p class="head-summary center text-increase">SUMMARY</p>
                         <p class="summary">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                             Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
                             unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                        {% if article.sentiment_score == 0.5 %}
+                            <p class="teal-text text-darken-1 center">This article is not opinion based and is a factual news material</p>
+                        {% else %}
+                            {% if article.sentiment_score < 0.5 %}
+                                <p class="indigo-text text-darken-3 center">This article is opinion based more as a negative emotion</p>
+                            {% elif article.sentiment_score > 0.5 %}
+                                <p class="indigo-text text-darken-3 center">This article is opinion based more as a positive emotion</p>
+                            {% endif %}
+                        {% endif %}
                         <div class="full-content" style="display: none;">
                             <p class="text-increase head-details center">DETAILS</p>
                             <p>{{ article.content }}</p>
-                            <img src="{{ article.image_link }}" class="responsive-img">
+                            {% if article.image_link != '/images/no-image.png' %}
+                                <img src="{{ article.image_link }}" class="responsive-img">
+                            {% endif %}
                         </div>
                     </div>
                     <div class="card-action center">
@@ -39,6 +77,13 @@
             </div>
         </div>
     {% endfor %}
+    <div id="chart" class="modal">
+        <div class="modal-content center">
+            <h4>Statistical Analysis</h4>
+            <p id="news_sentiment"></p>
+            <img id="news-image" src="{% static 'images/no-image.png'%}" alt="No Image" class="img-responsive">
+        </div>
+    </div>
 </section>
 
 <footer class="page-footer green darken-1" id="footer">

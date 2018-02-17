@@ -1,8 +1,9 @@
 from django.db import models
 LANGUAGE_LIST = (
-    ('EN', 'English'),
-    ('HI', 'Hindi'),
-    ('TG', 'Telugu')
+    ('en', 'English'),
+    ('hi', 'Hindi'),
+    ('ta', 'Tamil'),
+    ('ur', 'Urdu')
 )
 
 
@@ -19,3 +20,5 @@ class NewsContent(models.Model):
     post_date = models.DateTimeField('Post Addition Date')
     source_link = models.TextField(default='None')
     image_link = models.URLField(default='/images/no-image.png', max_length=1000)
+    sentiment_score = models.FloatField(default=0.0)
+    keywords = models.TextField(default='None')
