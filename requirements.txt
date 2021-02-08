@@ -12,7 +12,7 @@ Django==2.0.1
 feedfinder2==0.0.4
 feedparser==5.2.1
 google-api-python-client==1.6.4
-httplib2==0.10.3
+httplib2==0.19.0
 idna==2.6
 jieba3k==0.35.1
 libpcap==1.0.0b7
