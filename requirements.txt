@@ -28,7 +28,7 @@ oauthlib==2.0.6
 Pillow==5.0.0
 psycopg2==2.7.4
 psycopg2-binary==2.7.4
-py==1.5.2
+py==1.10.0
 pyasn1==0.4.2
 pyasn1-modules==0.2.1
 pycparser==2.18
