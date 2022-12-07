@@ -1,7 +1,7 @@
 apiclient==1.0.3
 beautifulsoup4==4.6.0
 bs4==0.0.1
-certifi==2017.11.5
+certifi==2022.12.7
 cffi==1.11.4
 chardet==3.0.4
 cssselect==1.0.3
